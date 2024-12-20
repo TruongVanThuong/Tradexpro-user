@@ -210,6 +210,17 @@ const UnAuthNav = ({
                       </a>
                     </Link>
                   </li>
+                  <li
+                    className={
+                      router.pathname == "/ieo" ? "cp-user-active-page" : ""
+                    }
+                  >
+                    <Link href="/ieo">
+                      <a>
+                        <span>{t("IEO")}</span>
+                      </a>
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -795,6 +806,24 @@ const UnAuthNav = ({
                             <BiLineChart />
                           </span>
                           <span className="line-h-19">{t("Markets")}</span>
+                        </div>
+                      </a>
+                    </Link>
+                  </li>
+                  <li
+                    className={
+                      router.pathname == "/ieo"
+                        ? "active-navbar nav-item"
+                        : "nav-item"
+                    }
+                  >
+                    <Link href="/ieo">
+                      <a className="nav-link text-primary-color-two">
+                        <div className="d-flex align-items-center gap-5">
+                          <span>
+                            <BiLineChart />
+                          </span>
+                          <span className="line-h-19">{t("IEO")}</span>
                         </div>
                       </a>
                     </Link>
