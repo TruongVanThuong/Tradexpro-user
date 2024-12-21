@@ -1888,3 +1888,17 @@ client-area
 /* .badge-danger {
   background-color: #ff79863d;
 } */
+
+button:disabled {
+  background-color: #d1d1d1;
+  color: #888888;
+  cursor: not-allowed;
+}
+
+.text-sm.text-green-500 {
+  color: green;
+}
+
+.text-sm.text-red-500 {
+  color: red;
+}
