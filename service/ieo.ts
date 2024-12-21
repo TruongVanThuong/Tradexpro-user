@@ -20,3 +20,13 @@ export const postRegisterIeo = async (
   });
   return data;
 };
+
+export const postReceiveIeo = async (itemId: number) => {
+  try {
+    const { data } = await request.post(`/receive-ieo`, { itemId });
+    return data;
+  } catch (error) {
+    console.error("Error while posting IEO:", error);
+    throw error;
+  }
+};

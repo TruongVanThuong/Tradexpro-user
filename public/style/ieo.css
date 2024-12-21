@@ -36,17 +36,59 @@ button.textWhite {
   height: 100%;
 }
 
-button.btn.btn-success{
+button.btn-success{
   color: #fff;
   background-color: #28a745;
   border-color: #28a745;
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 1rem;
+  font-weight: 400;
+  width: 96px;
 }
 
-button.btn.btn-primary {
+button.btn-primary {
   color: #fff;
   background-color: #007bff;
   border-color: #007bff;
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 1rem;
+  font-weight: 400;
+  width: 96px;
 }
+
+button.btn-info {
+  color: #fff;
+  background-color: #5bc0de;
+  border-color: #5bc0de;
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 1rem;
+  font-weight: 400;
+  width: 96px;
+}
+
+button.button-ieo {
+  width: 115px !important;
+}
+
+.label {
+  padding: 0 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  color: #fff;
+  display: inline-block;
+}
+
+.label-success {
+  background-color: #28a745;
+}
+
+.label-danger {
+  background-color: #dc3545;
+}
+
 
 .top-table {
   display: flex;

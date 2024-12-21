@@ -49,8 +49,15 @@ const TableIeo: React.FC = () => {
   }, []);
 
   const calculateProgress = (registered: number, total_supply: number) => {
-    return ((registered / total_supply) * 100).toFixed(3);
+    const progress = (registered / total_supply) * 100;
+    
+    if (progress === 100) {
+      return '100';
+    }
+  
+    return progress.toFixed(2);
   };
+  
 
   const handleOpenModal = (ieo: Ieo) => {
     setSelectedIeo(ieo);
@@ -78,11 +85,7 @@ const TableIeo: React.FC = () => {
     try {
       const response = await postRegisterIeo(selectedIeo.id, amount);
   
-      if (!response.success) {
-        throw new Error('Đăng ký không thành công!');
-      }
-  
-      if (response.success === true) {
+      if (response.success) {
         toast.success(response.message);
         
         setSelectedIeo({
@@ -124,10 +127,10 @@ const TableIeo: React.FC = () => {
             <th style={{ padding: '10px', border: '1px solid #ddd' }}>Token</th>
             <th style={{ padding: '10px', border: '1px solid #ddd' }}>Giá (USDT)</th>
             <th style={{ padding: '10px', border: '1px solid #ddd' }}>Tiến trình</th>
-            <th style={{ padding: '10px', border: '1px solid #ddd' }}>Tỷ lệ thắng tối đa</th>
-            <th style={{ padding: '10px', border: '1px solid #ddd' }}>Thời gian còn lại</th>
-            <th style={{ padding: '10px', border: '1px solid #ddd' }}>Thời gian bắt đầu</th>
-            <th style={{ padding: '10px', border: '1px solid #ddd' }}>Thời gian kết thúc</th>
+            <th style={{ padding: '10px', border: '1px solid #ddd', width:'10%' }}>Tỷ lệ thắng tối đa</th>
+            <th style={{ padding: '10px', border: '1px solid #ddd', width:'10%' }}>Thời gian còn lại</th>
+            <th style={{ padding: '10px', border: '1px solid #ddd', width:'10%' }}>Thời gian bắt đầu</th>
+            <th style={{ padding: '10px', border: '1px solid #ddd', width:'10%' }}>Thời gian kết thúc</th>
             <th style={{ padding: '10px', border: '1px solid #ddd' }}>Trạng thái</th>
             <th style={{ padding: '10px', border: '1px solid #ddd' }}>Thao tác</th>
           </tr>
@@ -154,15 +157,21 @@ const TableIeo: React.FC = () => {
               <td style={{ padding: '10px', border: '1px solid #ddd' }}>{ieo.timeRemaining}</td>
               <td style={{ padding: '10px', border: '1px solid #ddd' }}>{new Date(ieo.start_date).toLocaleString()}</td>
               <td style={{ padding: '10px', border: '1px solid #ddd' }}>{new Date(ieo.end_date).toLocaleString()}</td>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>{ieo.status}</td>
+              <td style={{ padding: '10px', border: '1px solid #ddd' }}>
+                {ieo.status === "Đã kết thúc" ? (
+                  <span className="label label-danger">Đã kết thúc</span>
+                ) : (
+                  <span className="label label-success">Đang diễn ra</span>
+                )}
+              </td>
               <td style={{ padding: '10px', border: '1px solid #ddd' }}>
                 {canJoin(ieo.start_date, ieo.end_date) ? (
                   <button 
                   type="button" 
-                  className="btn btn-primary" 
+                  className="btn-primary" 
                   onClick={() => handleOpenModal(ieo)}
                 >
-                  Tham Gia
+                  Tham gia
                 </button>
                 ) : (
                   <button className="btn btn-secondary" disabled>Tham gia</button>

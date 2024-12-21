@@ -4,7 +4,7 @@ import TableIeoHistory from './TableIeoHistory';
 const Home = () => {
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '20px', width:'85%', margin:'auto' }}>
       <div className="top-table">
         <h2>NHẬN IEO</h2>
         <a className='btn' href="/ieo">Quay lại</a>
