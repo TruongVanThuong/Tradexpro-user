@@ -44,6 +44,7 @@ import TopLeftInnerPageCircle from "components/TopLeftInnerPageCircle";
 import TopRightInnerPageCircle from "components/TopRightInnerPageCircle";
 import BottomLeftInnerPageCircle from "components/BottomLeftInnerPageCircle";
 import BottomRigtInnerPageCircle from "components/BottomRigtInnerPageCircle";
+import { CheckReferrals } from "service/user";
 
 const Signup: NextPage = () => {
   const { logo } = useSelector((state: RootState) => state.user);
@@ -53,7 +54,10 @@ const Signup: NextPage = () => {
 
   const { t } = useTranslation("common");
   const router = useRouter();
-
+  const [refCode, setRefCode] = useState("");
+  const [message, setMessage] = useState("");
+  const [isRefCodeValid, setIsRefCodeValid] = useState(false);
+  
   const { ref_code } = router.query;
   const [processing, setProcessing] = useState(false);
   const [showPassword, setShowPassword] = useState({
@@ -110,6 +114,36 @@ const Signup: NextPage = () => {
     }
     await dispatch(GetUserInfoByTokenAction());
   };
+
+  const handleCheckReferrals = async () => {
+    try {
+      console.log(refCode);
+      const data = await CheckReferrals(refCode);
+
+      if (data.success) {
+        setIsRefCodeValid(true);
+        setMessage(data.message);
+      } else {
+        setIsRefCodeValid(false);
+        setMessage(data.message);
+      }
+    } catch (error) {
+      setIsRefCodeValid(false);
+      setMessage("Something went wrong!");
+    }
+  };
+
+  const getRefCodeFromUrl = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('ref_code');
+  };
+
+  useEffect(() => {
+    const refCodeFromUrl = getRefCodeFromUrl();
+    if (refCodeFromUrl) {
+      setRefCode(refCodeFromUrl);
+    }
+  }, []);
 
   return (
     <>
@@ -420,6 +454,49 @@ const Signup: NextPage = () => {
                               </span>
                             </div>
                           </div>
+                          
+                          <div className=" tradex-grid md:tradex-grid-cols-2 tradex-gap-6 " style={{gridTemplateColumns: '9fr 3fr'}}>
+                            <div className=" tradex-relative">
+                              <Field
+                                type="text"
+                                name="refCode"
+                                id="refCode"
+                                onChange={(e) => setRefCode(e.target.value)}
+                                value={refCode}
+                                className={`tradex-block tradex-px-2.5 tradex-pb-2.5 tradex-pt-4 tradex-w-full tradex-text-sm tradex-text-body tradex-bg-transparent tradex-rounded-lg tradex-border-1 !tradex-border-background-primary tradex-appearance-none focus:tradex-outline-0 focus:tradex-ring-0 tradex-peer`}
+                              />
+                              <label
+                                htmlFor="refCode"
+                                className="tradex-absolute tradex-text-sm tradex-text-body tradex-duration-300 tradex-transform -tradex-translate-y-4 tradex-scale-75 tradex-top-2 tradex-z-10 tradex-origin-[0] tradex-bg-background-main tradex-px-2 peer-focus:tradex-px-2   peer-placeholder-shown:tradex-scale-100 peer-placeholder-shown:-tradex-translate-y-1/2 peer-placeholder-shown:tradex-top-1/2 peer-focus:tradex-top-2 peer-focus:tradex-scale-75 peer-focus:-tradex-translate-y-4 rtl:peer-focus:tradex-translate-x-1/4 rtl:tradex-peer-focus:left-auto tradex-start-1"
+                              >
+                                {t(`Referrals code`)}
+                              </label>                          
+                              {message && (
+                                <p
+                                  className={`text-sm ${
+                                    isRefCodeValid ? 'text-green-500' : 'text-red-500'
+                                  }`}
+                                >
+                                  {message}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className=" tradex-relative">
+                              <button
+                                onClick={handleCheckReferrals}
+                                type="button"
+                                style={{
+                                  right: 0,
+                                  display: 'flex',
+                                  position: 'absolute',
+                                  top: '2px',
+                                  alignItems: 'center'
+                                }}
+                                className="tradex-py-3 tradex-px-6 tradex-rounded-lg tradex-border tradex-border-primary group-hover:tradex-bg-primary group-hover:!tradex-text-white !tradex-text-title tradex-bg-transparent tradex-text-sm tradex-leading-[18px]"
+                              >Check</button>
+                            </div>
+                          </div>
 
                           {captchaData?.NOCAPTCHA_SITEKEY &&
                             parseInt(captchaData?.select_captcha_type) ===
@@ -436,7 +513,7 @@ const Signup: NextPage = () => {
                           <button
                             onClick={() => resetCaptcha()}
                             type="submit"
-                            disabled={processing}
+                            disabled={processing || !isRefCodeValid}
                             className="tradex-text-base tradex-font-semibold tradex-w-full tradex-flex tradex-items-center tradex-justify-center tradex-min-h-[56px] tradex-py-4 tradex-rounded-lg tradex-bg-primary tradex-text-white"
                           >
                             {processing ? (
