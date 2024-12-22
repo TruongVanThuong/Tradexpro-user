@@ -69,6 +69,17 @@ button.btn-info {
   width: 96px;
 }
 
+button.btn-secondary {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 1rem;
+  font-weight: 400;
+  width: 96px;
+}
+
 button.button-ieo {
   width: 115px !important;
 }
