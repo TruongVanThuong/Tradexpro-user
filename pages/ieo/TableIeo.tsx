@@ -48,14 +48,16 @@ const TableIeo: React.FC = () => {
     fetchIeos();
   }, []);
 
-  const calculateProgress = (registered: number, total_supply: number) => {
-    const progress = (registered / total_supply) * 100;
+  const calculateProgress = (registered: string | number, total_supply: string | number): number => {
+    const registeredNum = Number(registered);
+    const totalSupplyNum = Number(total_supply);    
+    const progress = (registeredNum / totalSupplyNum) * 100;
     
     if (progress === 100) {
-      return '100';
+      return Number('100');
     }
   
-    return progress.toFixed(2);
+    return Number(progress.toFixed(2));
   };
   
 
@@ -123,7 +125,7 @@ const TableIeo: React.FC = () => {
     <div>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
-          <tr style={{ backgroundColor: '#f4f4f4' }}>
+          <tr>
             <th style={{ padding: '10px', border: '1px solid #ddd' }}>Token</th>
             <th style={{ padding: '10px', border: '1px solid #ddd' }}>Giá (USDT)</th>
             <th style={{ padding: '10px', border: '1px solid #ddd' }}>Tiến trình</th>
@@ -165,16 +167,20 @@ const TableIeo: React.FC = () => {
                 )}
               </td>
               <td style={{ padding: '10px', border: '1px solid #ddd' }}>
-                {canJoin(ieo.start_date, ieo.end_date) ? (
+                {calculateProgress(ieo.registered, ieo.total_supply) < 100 && canJoin(ieo.start_date, ieo.end_date) ? (
                   <button 
-                  type="button" 
-                  className="btn-primary" 
-                  onClick={() => handleOpenModal(ieo)}
-                >
-                  Tham gia
-                </button>
+                    type="button" 
+                    className="btn-primary button-ieo" 
+                    onClick={() => handleOpenModal(ieo)}
+                  >
+                    Tham gia
+                  </button>
+                ) : calculateProgress(ieo.registered, ieo.total_supply) < 100 && !canJoin(ieo.start_date, ieo.end_date) ? (
+                  <button className="btn-secondary button-ieo" disabled>Tham gia</button>
+                ) : calculateProgress(ieo.registered, ieo.total_supply) === 100 && ieo.registered > 0 ? (
+                  <button className="btn-info button-ieo" disabled>Đã tham gia</button>
                 ) : (
-                  <button className="btn btn-secondary" disabled>Tham gia</button>
+                  <button className="btn-success button-ieo" disabled>Tham gia</button>
                 )}
               </td>
             </tr>
