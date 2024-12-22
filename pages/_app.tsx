@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "/public/style/app.css";
 import "/public/style/new-style.css";
+import "/public/style/ieo.css";
 import "/public/style/total.css";
 import "/public/style/responsive.css";
 import "/public/style/reactSelect.css";
