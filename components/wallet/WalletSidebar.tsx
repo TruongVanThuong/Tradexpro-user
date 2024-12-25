@@ -116,6 +116,16 @@ export default function WalletSidebar() {
             Withdrawal History
           </a>
         </Link>
+        <Link href={`/user/ieo-transaction-history`}>
+          <a
+            className={` tradex-inline-block tradex-w-full tradex-py-3 tradex-px-2.5 tradex-rounded tradex-bg-background-primary !tradex-text-title tradex-text-xl tradex-leading-6 ${
+              router.pathname == `/user/ieo-transaction-history` &&
+              "tradex-bg-primary !tradex-text-white"
+            }`}
+          >
+            Ieo Transfer History
+          </a>
+        </Link>
         <Link href={`/user/transaction-history`}>
           <a
             className={` tradex-inline-block tradex-w-full tradex-py-3 tradex-px-2.5 tradex-rounded tradex-bg-background-primary !tradex-text-title tradex-text-xl tradex-leading-6 ${
