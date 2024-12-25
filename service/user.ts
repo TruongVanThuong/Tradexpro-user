@@ -161,3 +161,8 @@ export const socialSigninApi = async (credentials: any) => {
   const { data } = await request.post("/social-sign-login", credentials);
   return data;
 };
+
+export const CheckReferrals = async (refCode: any) => {
+  const { data } = await request.post("/check-referrals-code", { refCode });
+  return data;
+};
