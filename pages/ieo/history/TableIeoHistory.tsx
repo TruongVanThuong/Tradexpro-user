@@ -93,37 +93,44 @@ const TableIeoHistory = () => {
           </tr>
         </thead>
         <tbody>
-        {ieoHistory.map((item) => {
-            return (
-            <tr key={item.id}>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.name}</td>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.quantity}</td>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.value * item.quantity}</td>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>{new Date(item.start_date).toLocaleDateString()}</td>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>{new Date(item.end_date).toLocaleDateString()}</td>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.frozen_rate}%</td>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.release_rate}%</td>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.winning_rate}</td>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>
-                {item.end_date < new Date().toISOString() ? (
-                  <span className="label label-danger">Đã kết thúc</span>
-                ) : (
-                  <span className="label label-success">Đang diễn ra</span>
-                )}
-              </td>
-              <td style={{ padding: '10px', border: '1px solid #ddd' }}>
-                {item.end_date < new Date().toISOString() ? (
-                  item.checkIeoWallet ? (
-                    <button className="btn-info button-ieo" disabled>Đã nhận IEO</button>
-                  ) : (
-                    <button className="btn-success button-ieo" onClick={() => receiveIeo(item.id)}>Nhận IEO</button>
-                  )
-                ) : (
-                  <button className="btn btn-secondary button-ieo" disabled>Nhận IEO</button>
-                )}
+          {ieoHistory.length === 0 ? (
+            <tr>
+              <td colSpan={10} style={{ padding: "10px", textAlign: "center" }}>
+                No data available
               </td>
             </tr>
-          )})}
+          ) : (ieoHistory.map((item) => {
+            return (
+              <tr key={item.id}>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.name}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.quantity}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.value * item.quantity}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{new Date(item.start_date).toLocaleDateString()}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{new Date(item.end_date).toLocaleDateString()}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.frozen_rate}%</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.release_rate}%</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.winning_rate}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>
+                  {item.end_date < new Date().toISOString() ? (
+                    <span className="label label-danger">Đã kết thúc</span>
+                  ) : (
+                    <span className="label label-success">Đang diễn ra</span>
+                  )}
+                </td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>
+                  {item.end_date < new Date().toISOString() ? (
+                    item.checkIeoWallet ? (
+                      <button className="btn-info button-ieo" disabled>Đã nhận IEO</button>
+                    ) : (
+                      <button className="btn-success button-ieo" onClick={() => receiveIeo(item.id)}>Nhận IEO</button>
+                    )
+                  ) : (
+                    <button className="btn btn-secondary button-ieo" disabled>Nhận IEO</button>
+                  )}
+                </td>
+              </tr>
+            );
+          }))}
         </tbody>
       </table>
     </div>
