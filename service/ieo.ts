@@ -30,3 +30,13 @@ export const postReceiveIeo = async (itemId: number) => {
     throw error;
   }
 };
+
+export const postReceiveIeoWallet = async (itemId: number) => {
+  try {
+    const { data } = await request.post(`/receive-ieo-wallet`, { itemId });
+    return data;
+  } catch (error) {
+    console.error("Error while posting IEO:", error);
+    throw error;
+  }
+};
