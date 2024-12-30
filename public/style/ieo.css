@@ -80,7 +80,8 @@ button.btn-secondary {
   width: 96px;
 }
 
-button.button-ieo {
+button.button-ieo,
+button.button-swap {
   width: 115px !important;
 }
 
