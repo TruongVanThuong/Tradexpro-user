@@ -33,7 +33,13 @@ const IeoTransactionHistory: NextPage = () => {
       Header: t("Ieo Icon"),
       accessor: "ieo_icon",
       Cell: ({ cell }: any) => (
-        <img src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploaded_file/uploads/coin/${cell.value}`} alt="IEO Icon" style={{ width: "50px", height: "50px" }} />
+        cell.value && (
+          <img
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploaded_file/uploads/coin/${cell.value}`}
+            alt="IEO Icon"
+            style={{ width: "50px", height: "50px" }}
+          />
+        )      
       ),
     },
     {

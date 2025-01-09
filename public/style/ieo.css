@@ -31,12 +31,36 @@
   color: #fff;
 }
 
+.container-ieo {
+  padding: 20px;
+  width: 85%;
+  margin: auto;
+}
+
+.container-ieo .top-table .btn {
+  max-width: 150px;
+}
+
+.container-ieo .table-overflow {
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.container-ieo .table-overflow::-webkit-scrollbar {
+  display: none;
+}
+
+.container-ieo .table-overflow table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
 button.textWhite {
   width: 100%;
   height: 100%;
 }
 
-button.btn-success{
+button.btn-success {
   color: #fff;
   background-color: #28a745;
   border-color: #28a745;
@@ -131,12 +155,6 @@ button.button-swap {
   cursor: pointer
 }
 
-@media (max-width: 767.98px) {
-  .IconX {
-      display: none
-  }
-}
-
 .IconX img {
   width: 9.985px;
   height: 9.985px;
@@ -151,12 +169,6 @@ button.button-swap {
 
 .Ctnback .backmoible {
   display: none
-}
-
-@media (max-width: 767.98px) {
-  .Ctnback .backmoible {
-      display: block
-  }
 }
 
 .Ctnback .textbackp {
@@ -194,20 +206,6 @@ button.button-swap {
   background: #0f1317
 }
 
-@media (max-width: 767.98px) {
-  .card_ieoJoin {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0f1317;
-    z-index: 8;
-    padding: 0;
-    justify-content: space-between
-  }
-}
-
 .card_ieoJoin .card_ieoJoin_content {
   display: flex;
   flex-direction: column;
@@ -216,23 +214,11 @@ button.button-swap {
   align-self: stretch
 }
 
-@media (max-width: 767.98px) {
-  .card_ieoJoin .card_ieoJoin_content {
-      gap: 16px
-  }
-}
-
 .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_title {
   display: flex;
   justify-content: space-between;
   align-items: center;
   align-self: stretch
-}
-
-@media (max-width: 767.98px) {
-  .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_title {
-      padding: 10px 16px
-  }
 }
 
 .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_head {
@@ -245,23 +231,10 @@ button.button-swap {
   background: #4d7ff829
 }
 
-@media (max-width: 767.98px) {
-  .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_head {
-      background: none;
-      padding: 0 16px
-  }
-}
-
 .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_head .card_ieoJoin_head_left {
   display: flex;
   flex-direction: column;
   gap: 8px
-}
-
-@media (max-width: 767.98px) {
-  .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_head .card_ieoJoin_head_left {
-      gap: 0px
-  }
 }
 
 .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_head .card_ieoJoin_head_left .ieoJoin_asset {
@@ -295,13 +268,6 @@ button.button-swap {
   align-self: stretch
 }
 
-@media (max-width: 767.98px) {
-  .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_form {
-      gap: 12px;
-      padding: 0 16px
-  }
-}
-
 .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_form .ieoJoin_form_head {
   width: 100%;
   display: flex;
@@ -314,13 +280,6 @@ button.button-swap {
   flex-direction: column;
   align-items: center;
   gap: 4px
-}
-
-@media (max-width: 767.98px) {
-  .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_form .ieoJoin_form_head .ieoJoin_form_head_column {
-      height: 64px;
-      justify-content: space-between
-  }
 }
 
 .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_form .ieoJoin_form_input {
@@ -389,16 +348,84 @@ button.button-swap {
   cursor: pointer
 }
 
-@media (max-width: 767.98px) {
-  .card_ieoJoin .card_ieoJoin_button {
-    margin: 16px
-  }
-}
-
 .wraper_ieo {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   background: #0f1317
+}
+
+table .label {
+  white-space: nowrap;
+  width: 100%;
+  text-align: center;
+}
+
+.td-action {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.action-ieo-history {
+  display: flex;
+}
+
+
+@media (max-width: 767.98px) {
+  .container-ieo {
+    width: 95%;
+  }
+
+  .IconX {
+    display: none
+  }
+
+  .Ctnback .backmoible {
+	display: block
+  }
+
+  .card_ieoJoin {
+	position: fixed;
+	top: 70px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #0f1317;
+	z-index: 8;
+	padding: 0;
+	justify-content: space-between
+  }
+
+  .card_ieoJoin .card_ieoJoin_content {
+	gap: 16px
+  }
+
+  .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_title {
+	padding: 10px 16px
+  }
+
+  .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_head {
+	background: none;
+	padding: 0 16px
+  }
+
+  .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_head .card_ieoJoin_head_left {
+	gap: 0px
+  }
+
+  .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_form {
+	gap: 12px;
+	padding: 0 16px
+  }
+
+  .card_ieoJoin .card_ieoJoin_content .card_ieoJoin_form .ieoJoin_form_head .ieoJoin_form_head_column {
+	height: 64px;
+	justify-content: space-between
+  }
+
+  .card_ieoJoin .card_ieoJoin_button {
+	margin: 16px
+  }
 }

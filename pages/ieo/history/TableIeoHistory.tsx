@@ -67,7 +67,7 @@ const TableIeoHistory = () => {
         toast.error(response.message);
       }
     } catch (error) {
-      toast.error('Có lỗi xảy ra, vui lòng thử lại!!!');
+      toast.error('An error occurred, please try again!!!');
     }
   }
 
@@ -82,7 +82,7 @@ const TableIeoHistory = () => {
         toast.error(response.message);
       }
     } catch (error) {
-      toast.error('Có lỗi xảy ra, vui lòng thử lại!!!');
+      toast.error('An error occurred, please try again!!!');
     }
   }
 
@@ -95,20 +95,20 @@ const TableIeoHistory = () => {
   }
 
   return (
-    <div>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+    <div className='table-overflow'>
+      <table>
         <thead>
-          <tr style={{ backgroundColor: "#f4f4f4" }}>
+          <tr style={{ backgroundColor: "rgb(2, 123, 255)" }}>
             <th style={{ padding: "10px", border: "1px solid #ddd" }}>Token</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'8%' }}>Số lượng</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Giá trị</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Bắt đầu</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Kết thúc</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Tỷ lệ đóng băng</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Tỷ lệ giải phóng</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Tỷ lệ thắng</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Trạng thái</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Hành động</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'8%' }}>Amount</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'8%' }}>Value</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Start Time</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>End Time</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'8%' }}>Frozen Rate</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'8%' }}>Release Rate</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Winning Rate</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Status</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -131,30 +131,32 @@ const TableIeoHistory = () => {
                 <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.winning_rate}</td>
                 <td style={{ padding: '10px', border: '1px solid #ddd' }}>
                   {item.end_date < new Date().toISOString() ? (
-                    <span className="label label-danger">Đã kết thúc</span>
+                    <span className="label label-danger">Ended</span>
                   ) : (
-                    <span className="label label-success">Đang diễn ra</span>
+                    <span className="label label-success">In Progress</span>
                   )}
                 </td>
-                <td style={{ padding: '10px', border: '1px solid #ddd', display: 'grid' }}>
-                  {item.end_date < new Date().toISOString() ? (
-                    item.checkIeoWallet ? (
-                      <button className="btn-info button-ieo" disabled>Đã nhận IEO</button>
+                <td className="td-action">
+                  <div className="action-ieo-history">
+                    {item.end_date < new Date().toISOString() ? (
+                      item.checkIeoWallet ? (
+                        <button className="btn-info button-ieo mr-2" disabled>Received IEO</button>
+                      ) : (
+                        <button className="btn-success button-ieo mr-2" onClick={() => receiveIeoWallet(item.id)}>Receive IEO</button>
+                      )
                     ) : (
-                      <button className="btn-success button-ieo" onClick={() => receiveIeoWallet(item.id)}>Nhận IEO</button>
-                    )
-                  ) : (
-                    <button className="btn btn-secondary button-ieo" disabled>Nhận IEO</button>
-                  )}
-                  {item.end_date < new Date().toISOString() ? (
-                    item.checkIeoTranferHistory ? (
-                      <button className="btn-info button-swap mt-2" disabled>Đã SWAP</button>
+                      <button className="btn btn-secondary button-ieo mr-2" disabled>Receive IEO</button>
+                    )}
+                    {item.end_date < new Date().toISOString() ? (
+                      item.checkIeoTranferHistory ? (
+                        <button className="btn-info button-swap" disabled>Swapped</button>
+                      ) : (
+                        <button className="btn-success button-swap" onClick={() => receiveIeo(item.id)}>Swap</button>
+                      )
                     ) : (
-                      <button className="btn-success button-swap mt-2" onClick={() => receiveIeo(item.id)}>SWAP</button>
-                    )
-                  ) : (
-                    <button className="btn btn-secondary button-swap mt-2" disabled>SWAP</button>
-                  )}
+                      <button className="btn btn-secondary button-swap" disabled>Swap</button>
+                    )}
+                  </div>
                 </td>
               </tr>
             );
