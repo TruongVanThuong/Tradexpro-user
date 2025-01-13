@@ -27,11 +27,69 @@ const AllBuyOrders = ({ OpenBookBuy, show, customClass }: any) => {
     amount: 0,
     total: 0,
   });
+  const [currentBaseIndex, setCurrentBaseIndex] = React.useState(0);
+
+  const generateOrders = (baseOrder: any) => {
+    const orders = [];
+    const basePrice = parseFloat(baseOrder.price);
+    const baseAmount = parseFloat(baseOrder.amount);
+    let maxTotal = 0;
+
+    for (let i = 0; i < show; i++) {
+      const price = (basePrice - (i * 0.001)).toFixed(8);
+      const randomOffset = (Math.random() * 199998 - 99999).toFixed(8); // -999 -> 999
+      const amount = (baseAmount + parseFloat(randomOffset)).toFixed(8);
+      const total = (parseFloat(price) * parseFloat(amount)).toFixed(8);
+
+      const order = {
+        created_at: new Date().toISOString(),
+        status: 0,
+        processed: "0.00000000",
+        price: price,
+        amount: amount,
+        total: total,
+        my_size: 0,
+        is_favorite: null,
+        percentage: "0"
+      };
+      
+      orders.push(order);
+      const orderTotal = parseFloat(total);
+      if (orderTotal > maxTotal) maxTotal = orderTotal;
+    }
+
+    // Calculate percentages
+    orders.forEach(order => {
+      order.percentage = ((parseFloat(order.total) / maxTotal) * 100).toFixed(8);
+    });
+
+    return orders;
+  };
+
   useEffect(() => {
     const Array = show ? [...OpenBookBuy].slice(0, show) : [...OpenBookBuy];
     setBuyData(Array);
     return () => {};
   }, [OpenBookBuy]);
+  useEffect(() => {
+    const updateOrders = () => {
+      const baseOrder = OpenBookBuy[currentBaseIndex];
+      if (!baseOrder) return;
+      const newOrders = generateOrders(baseOrder);
+      setBuyData(newOrders);
+    };
+
+    updateOrders();
+
+    const intervalId = setInterval(() => {
+      setCurrentBaseIndex((prevIndex) => {
+        const nextIndex = prevIndex + 1;
+        return nextIndex >= OpenBookBuy.length ? 0 : nextIndex;
+      });
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [OpenBookBuy, currentBaseIndex, show]);
 
   return (
     <div className={`buy-order ${customClass}`}>
