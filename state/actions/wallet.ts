@@ -7,6 +7,9 @@ import {
   GetWalletAddress,
 } from "service/wallet";
 import { toast } from "react-toastify";
+import { Dispatch } from 'redux';
+import { setLoading, setHistoryData } from 'state/reportsSlice';
+import { fetchIeoTransactionHistory } from 'service/wallet';
 
 export const WalletListApiAction = async (
   url: string,
@@ -69,4 +72,33 @@ export const GetWalletAddressAction = async (
     toast.error(response.message);
   }
   return response;
+};
+
+export const AllIeoTransactionHistoryAction = (
+  selectedLimit: string,
+  pageNumber: number,
+  sortingColumn: string,
+  sortingOrder: string,
+  search: string
+) => async (dispatch: Dispatch) => {
+  dispatch(setLoading(true));
+
+  try {
+    const response = await fetchIeoTransactionHistory({
+      limit: parseInt(selectedLimit),
+      page: pageNumber,
+      sort: sortingColumn,
+      sort_order: sortingOrder,
+      search,
+    });
+    console.log("API Response:", response);
+    dispatch(setHistoryData({
+      items: response.data.data,
+      pagination: response.data.pagination,
+    }));
+  } catch (error) {
+    console.error("Error fetching transaction history:", error);
+  } finally {
+    dispatch(setLoading(false));
+  }
 };

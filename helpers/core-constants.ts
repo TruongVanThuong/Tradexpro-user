@@ -208,6 +208,11 @@ export const tabs = [
     link: "/user/sell-order-history",
   },
   {
+    type: "ieo-transaction",
+    label: "Ieo Transaction History",
+    link: "/user/ieo-transaction-history",
+  },
+  {
     type: "transaction",
     label: "Transaction History",
     link: "/user/transaction-history",
@@ -263,6 +268,11 @@ export const dropdownTabs = [
     type: "sell-order",
     label: "Sell Order History",
     link: "/user/sell-order-history",
+  },
+  {
+    type: "ieo-transaction",
+    label: "Ieo Transaction History",
+    link: "/user/ieo-transaction-history",
   },
   {
     type: "transaction-history",

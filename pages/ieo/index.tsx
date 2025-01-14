@@ -1,13 +1,15 @@
 import React from 'react';
 import TableIeo from './TableIeo';
+import useTranslation from "next-translate/useTranslation";
 
 const Home = () => {
+  const { t } = useTranslation("common");
 
   return (
-    <div style={{ padding: '20px', width:'85%', margin:'auto' }}>
+    <div className='container-ieo'>
       <div className="top-table">
-        <h2>IEO ĐĂNG KÍ/ PHÂN BỔ</h2>
-        <a className='btn' href="/ieo/history">Nhận IEO</a>
+        <h2>{t("IEO REGISTER / ALLOCATION")}</h2>
+        <a className='btn' href="/ieo/history">{t("Receive IEO")}</a>
       </div>
       <TableIeo />
     </div>

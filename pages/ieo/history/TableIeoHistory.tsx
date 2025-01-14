@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { RootState } from "state/store";
-import { getIeoUserRegistered } from "service/ieo";
+import { 
+  getIeoUserRegistered,
+  postReceiveIeoWallet,
+  postReceiveIeo
+} from "service/ieo";
 import { toast } from "react-toastify";
-import { postReceiveIeo } from "service/ieo";
+import useTranslation from "next-translate/useTranslation";
 
 interface IeoHistory {
   id: number;
@@ -19,9 +23,11 @@ interface IeoHistory {
   release_rate: number;
   winning_rate: number;
   checkIeoWallet: string;
+  checkIeoTranferHistory: string;
 }
 
 const TableIeoHistory = () => {
+  const { t } = useTranslation("common");
   const router = useRouter();
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
   const [ieoHistory, setIeoHistory] = useState<IeoHistory[]>([]);
@@ -41,11 +47,11 @@ const TableIeoHistory = () => {
       const response = await getIeoUserRegistered()
 
       if (!response.success) {
-        throw new Error("Failed to fetch IEO history data");
+        throw new Error(t("Failed to fetch IEO history data"));
       }
       setIeoHistory(response.data);
     } catch (error: any) {
-      setError(error.message || "Error fetching IEO data");
+      setError(error.message || t("Error fetching IEO data"));
       console.error("Error fetching IEO data:", error);
     } finally {
       setLoading(false);
@@ -63,40 +69,55 @@ const TableIeoHistory = () => {
         toast.error(response.message);
       }
     } catch (error) {
-      toast.error('Có lỗi xảy ra, vui lòng thử lại!!!');
+      toast.error(t("An error occurred, please try again!!!"));
+    }
+  }
+
+  const receiveIeoWallet = async (itemId: number) => {
+    try {
+      const response = await postReceiveIeoWallet(itemId);
+
+      if (response.success) {
+        toast.success(response.message);
+        fetchIeoHistory();
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error(t("An error occurred, please try again!!!"));
     }
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>{t("Loading...")}</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>{t("Error:")} {error}</div>;
   }
 
   return (
-    <div>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+    <div className='table-overflow'>
+      <table>
         <thead>
-          <tr style={{ backgroundColor: "#f4f4f4" }}>
-            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Token</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'8%' }}>Số lượng</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Tổng (USDT) đã nhập</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Bắt đầu</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Kết thúc</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Tỷ lệ đóng băng</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Tỷ lệ giải phóng</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>Tỷ lệ thắng</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Trạng thái</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Hành động</th>
+          <tr style={{ backgroundColor: "rgb(2, 123, 255)" }}>
+            <th style={{ padding: "10px", border: "1px solid #ddd" }}>{t("Token")}</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'8%' }}>{t("Amount")}</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'8%' }}>{t("Value")}</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>{t("Start Time")}</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>{t("End Time")}</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'8%' }}>{t("Frozen Rate")}</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'8%' }}>{t("Release Rate")}</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd", width:'10%' }}>{t("Winning Rate")}</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd" }}>{t("Status")}</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd" }}>{t("Action")}</th>
           </tr>
         </thead>
         <tbody>
           {ieoHistory.length === 0 ? (
             <tr>
               <td colSpan={10} style={{ padding: "10px", textAlign: "center" }}>
-                No data available
+                {t("No data available")}
               </td>
             </tr>
           ) : (ieoHistory.map((item) => {
@@ -104,29 +125,53 @@ const TableIeoHistory = () => {
               <tr key={item.id}>
                 <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.name}</td>
                 <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.quantity}</td>
-                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.value * item.quantity}</td>
-                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{new Date(item.start_date).toLocaleDateString()}</td>
-                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{new Date(item.end_date).toLocaleDateString()}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.value}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{new Date(item.start_date).toLocaleString()}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{new Date(item.end_date).toLocaleString()}</td>
                 <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.frozen_rate}%</td>
                 <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.release_rate}%</td>
                 <td style={{ padding: '10px', border: '1px solid #ddd' }}>{item.winning_rate}</td>
                 <td style={{ padding: '10px', border: '1px solid #ddd' }}>
                   {item.end_date < new Date().toISOString() ? (
-                    <span className="label label-danger">Đã kết thúc</span>
+                    <span className="label label-danger">{t("Ended")}</span>
                   ) : (
-                    <span className="label label-success">Đang diễn ra</span>
+                    <span className="label label-success">{t("In Progress")}</span>
                   )}
                 </td>
-                <td style={{ padding: '10px', border: '1px solid #ddd' }}>
-                  {item.end_date < new Date().toISOString() ? (
-                    item.checkIeoWallet ? (
-                      <button className="btn-info button-ieo" disabled>Đã nhận IEO</button>
+                <td className="td-action">
+                  <div className="action-ieo-history">
+                    {item.end_date < new Date().toISOString() ? (
+                      item.checkIeoTranferHistory && !item.checkIeoWallet ? (
+                        <button
+                          className="btn-success button-ieo mr-2"
+                          onClick={() => receiveIeoWallet(item.id)}
+                        >
+                          {t("Receive IEO")}
+                        </button>
+                      ) : item.checkIeoWallet ? (
+                        <button className="btn-info button-ieo mr-2" disabled>
+                          {t("Received IEO")}
+                        </button>
+                      ) : (
+                        <button className="btn btn-secondary button-ieo mr-2" disabled>
+                          {t("Receive IEO")}
+                        </button>
+                      )
                     ) : (
-                      <button className="btn-success button-ieo" onClick={() => receiveIeo(item.id)}>Nhận IEO</button>
-                    )
-                  ) : (
-                    <button className="btn btn-secondary button-ieo" disabled>Nhận IEO</button>
-                  )}
+                      <button className="btn btn-secondary button-ieo mr-2" disabled>
+                        {t("Receive IEO")}
+                      </button>
+                    )}
+                    {item.end_date < new Date().toISOString() ? (
+                      item.checkIeoTranferHistory ? (
+                        <button className="btn-info button-swap" disabled>{t("Swapped")}</button>
+                      ) : (
+                        <button className="btn-success button-swap" onClick={() => receiveIeo(item.id)}>{t("Swap")}</button>
+                      )
+                    ) : (
+                      <button className="btn btn-secondary button-swap" disabled>{t("Swap")}</button>
+                    )}
+                  </div>
                 </td>
               </tr>
             );

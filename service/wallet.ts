@@ -43,3 +43,33 @@ export const getTotalWalletBalanceApi = async () => {
   const { data } = await request.get(`/wallet-total-value`);
   return data;
 };
+
+export const fetchIeoTransactionHistory = async ({
+  limit,
+  page,
+  sort,
+  sort_order,
+  search,
+}: {
+  limit: number;
+  page: number;
+  sort: string;
+  sort_order: string;
+  search: string;
+}) => {
+  try {
+    const { data } = await request.get('/get-ieo-transaction-history', {
+      params: {
+        limit,
+        page,
+        sort,
+        sort_order,
+        search,
+      },
+    });
+    return data;
+  } catch (error: any) {
+    console.error("API Error:", error);
+    throw new Error(error.message || 'Failed to fetch data');
+  }
+};
